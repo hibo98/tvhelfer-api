@@ -1,10 +1,10 @@
 {
-    "name": "vendor/t-v-helfer-a-p-i",
-    "description": "Description of project TVHelferAPI.",
+    "name": "vendor/tv-helfer-api",
+    "description": "RESTful API for tvhelfer.de",
     "authors": [
         {
-            "name": "NMerkelt",
-            "email": "your@email.here"
+            "name": "Niklas Merkelt",
+            "email": "niklasmerkelt@mail.de"
         }
     ],
     "require": {
