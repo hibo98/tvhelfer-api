@@ -1,0 +1,13 @@
+{
+    "name": "vendor/t-v-helfer-a-p-i",
+    "description": "Description of project TVHelferAPI.",
+    "authors": [
+        {
+            "name": "NMerkelt",
+            "email": "your@email.here"
+        }
+    ],
+    "require": {
+        "slim/slim-skeleton": "3.1.6"
+    }
+}
