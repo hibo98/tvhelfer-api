@@ -155,6 +155,27 @@ $app->get('/locations/{id}/dab/transmitters', function (Request $request, Respon
         return $response->withJson(array('error' => 404, 'msg' => 'Location not found'), 404);
     }
 });
+$app->get('/dvbt/transmitters/{id}', function (Request $request, Response $response, array $args) {
+    $transmitters = Transmitter::getTransmitter($args['id']);
+
+    if ($transmitters != null) {
+        $result = array();
+
+        $result['id'] = $transmitters->id;
+        $result['location'] = $transmitters->location->id;
+        $result['bouquet'] = $transmitters->programmpaket->id;
+        $result['channel'] = $transmitters->channel;
+        $result['polarisation'] = $transmitters->polarisation;
+        $result['ERP_kW'] = $transmitters->ERP_kW;
+        $result['ERP_dbW'] = $transmitters->ERP_dbW;
+        $result['status'] = $transmitters->status;
+        $result['onlineSince'] = $transmitters->onlineSince;
+
+        return $response->withJson($result);
+    } else {
+        return $response->withJson(array('error' => 404, 'msg' => 'Transmitter not found'), 404);
+    }
+});
 $app->get('/dvbt/bouquets', function (Request $request, Response $response, array $args) {
     $result = array();
     $bouquets = Programmpaket::getPakets();
@@ -226,6 +247,27 @@ $app->get('/dvbt/bouquets/{b}/programs/{id}', function (Request $request, Respon
         return $response->withJson(array('error' => 404, 'msg' => 'Bouquet not found'), 404);
     }
 });
+$app->get('/dvbt2/transmitters/{id}', function (Request $request, Response $response, array $args) {
+    $transmitters = Transmitter::getTransmitter($args['id'], true);
+
+    if ($transmitters != null) {
+        $result = array();
+
+        $result['id'] = $transmitters->id;
+        $result['location'] = $transmitters->location->id;
+        $result['bouquets'] = $transmitters->programmpaket->id;
+        $result['channel'] = $transmitters->channel;
+        $result['polarisation'] = $transmitters->polarisation;
+        $result['ERP_kW'] = $transmitters->ERP_kW;
+        $result['ERP_dbW'] = $transmitters->ERP_dbW;
+        $result['status'] = $transmitters->status;
+        $result['onlineSince'] = $transmitters->onlineSince;
+
+        return $response->withJson($result);
+    } else {
+        return $response->withJson(array('error' => 404, 'msg' => 'Transmitter not found'), 404);
+    }
+});
 $app->get('/dvbt2/bouquets', function (Request $request, Response $response, array $args) {
     $result = array();
     $bouquets = Programmpaket::getPakets(true);
@@ -295,6 +337,27 @@ $app->get('/dvbt2/bouquets/{b}/programs/{id}', function (Request $request, Respo
         return $response->withJson($result);
     } else {
         return $response->withJson(array('error' => 404, 'msg' => 'Bouquet not found'), 404);
+    }
+});
+$app->get('/dab/transmitters/{id}', function (Request $request, Response $response, array $args) {
+    $transmitters = DABTransmitter::getTransmitter($args['id']);
+
+    if ($transmitters != null) {
+        $result = array();
+
+        $result['id'] = $transmitters->id;
+        $result['location'] = $transmitters->location->id;
+        $result['ensemble'] = $transmitters->programmpaket->id;
+        $result['channel'] = $transmitters->channel;
+        $result['frequenz'] = $transmitters->frequenz;
+        $result['polarisation'] = $transmitters->polarisation;
+        $result['ERP_kW'] = $transmitters->ERP_kW;
+        $result['ERP_dbW'] = $transmitters->ERP_dbW;
+        $result['status'] = $transmitters->status;
+
+        return $response->withJson($result);
+    } else {
+        return $response->withJson(array('error' => 404, 'msg' => 'Transmitter not found'), 404);
     }
 });
 $app->get('/dab/ensembles', function (Request $request, Response $response, array $args) {

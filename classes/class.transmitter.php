@@ -26,25 +26,26 @@ class Transmitter {
         $this->polarisation = $polarisation;
         $W = (float) ($ERP_kW * 1000);
         if ($ERP_dbW == "") {
-            $this->ERP_kW = ((float) $ERP_kW) . " kW";
-            $this->ERP_dbW = round(10 * log10($W), 2) . " dbW";
+            $this->ERP_kW = (float) $ERP_kW;
+            $this->ERP_dbW = round(10 * log10($W), 2);
         } else {
-            $this->ERP_kW = round(pow(10, ($ERP_dbW / 10)) / 1000, 2) . " kW";
-            $this->ERP_dbW = ((float) $ERP_dbW) . " dbW";
+            $this->ERP_kW = round(pow(10, ($ERP_dbW / 10)) / 1000, 2);
+            $this->ERP_dbW = (float) $ERP_dbW;
         }
         $this->status = $status;
-        $this->onlineSince = empty($onlineSince) ? "-" : date("d.m.Y", $onlineSince);
+        $this->onlineSince = empty($onlineSince) ? null : (int) $onlineSince;
     }
     
     public static function getTransmitter($id, $dvbt2 = false) {
-        $result = array();
         $table = $dvbt2 ? "dvbt2_transmitters" : "dvbt_transmitters";
         global $DB;
-        $answer = $DB->query("SELECT * FROM $table WHERE id = ?", $id);
-        foreach($answer as $transmitter) {
-            array_push($result, new Transmitter($transmitter['id'], $transmitter['location_id'], $transmitter['programmpaketId'], $transmitter['channel'], $transmitter['polarisation'], $transmitter['ERP'], $transmitter['ERP_dbW'], $transmitter['status'], $transmitter['onlineSince'], $dvbt2));
+        $query = $DB->query("SELECT * FROM $table WHERE id = ?", $id);
+        if (!empty($query)) {
+            $transmitter = $query[0];
+            return new Transmitter($transmitter['id'], $transmitter['location_id'], $transmitter['programmpaketId'], $transmitter['channel'], $transmitter['polarisation'], $transmitter['ERP'], $transmitter['ERP_dbW'], $transmitter['status'], $transmitter['onlineSince'], $dvbt2);
+        } else {
+            return null;
         }
-        return $result;
     }
     
     public static function getTransmittersByLocation($id, $dvbt2 = false) {

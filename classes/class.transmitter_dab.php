@@ -24,26 +24,25 @@ class DABTransmitter {
         $this->frequenz = $TransmitterDB['frequenz'];
         $this->polarisation = $TransmitterDB['polarisation'];
         $kW = (float) $TransmitterDB['ERP_kW'];
-        $W = (float) ($kW * 1000);
         $dbW = (float) $TransmitterDB['ERP_dbW'];
         if ($dbW == "") {
-            $this->ERP_kW = "$kW kW";
-            $this->ERP_dbW = round(10 * log10($W), 2) . " dbW";
+            $this->ERP_kW = $kW;
+            $this->ERP_dbW = round(10 * log10($W), 2);
         } else {
-            $this->ERP_kW = round(pow(10, ($dbW / 10)) / 1000, 2) . " kW";
-            $this->ERP_dbW = "$dbW dbW";
+            $this->ERP_kW = round(pow(10, ($dbW / 10)) / 1000, 2);
+            $this->ERP_dbW = $dbW;
         }
         $this->status = $TransmitterDB['status'];
     }
     
     public static function getTransmitter($id) {
-        $result = array();
         global $DB;
-        $answer = $DB->query("SELECT * FROM dabTransmitters WHERE id = ?", $id);
-        foreach($answer as $transmitter) {
-            array_push($result, new DABTransmitter($transmitter));
+        $query = $DB->query("SELECT * FROM dabTransmitters WHERE id = ?", $id);
+        if (!empty($query)) {
+            return new DABTransmitter($query[0]);
+        } else {
+            return null;
         }
-        return $result;
     }
     
     public static function getTransmittersByLocation($id) {
