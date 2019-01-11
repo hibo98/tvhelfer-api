@@ -12,6 +12,18 @@ require_once 'classes/class.transmitter.php';
 require_once 'classes/class.transmitter_dab.php';
 
 $app = new \Slim\App;
+$app->get("/", function (Request $request, Response $response, array $args) {
+    $result .= '<!DOCTYPE html>';
+    $result .= '<html lang="en">';
+    $result .= '<head><title>TV Helfer API</title><meta charset="utf-8"/></head>';
+    $result .= '<body>';
+    $result .= '<h1>TV Helfer API</h1>';
+    $result .= '<p>Sie befinden sich auf der Hauptseite des API von tvhelfer.de.</p>';
+    $result .= '<p>Die Dokumentation des API finden Sie <a href="/doku.pdf">hier</a></p>';
+    $result .= '</body>';
+    $result .= '</html>';
+    return $response->write($result);
+});
 $app->get("/countries", function (Request $request, Response $response, array $args) {
     $result = array();
     $countries = Country::getAll();
